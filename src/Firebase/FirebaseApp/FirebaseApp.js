@@ -1,6 +1,6 @@
 import { initializeApp } from "firebase/app";
 import firebaseConfig from '../FirebaseConfig/FirebaseConfig';
-import { createUserWithEmailAndPassword, getAuth, GoogleAuthProvider, onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup, signOut } from "firebase/auth";
+import { createUserWithEmailAndPassword, getAuth, GoogleAuthProvider, onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup, signOut, updateProfile } from "firebase/auth";
 import { useEffect, useState } from "react";
 
 
@@ -8,6 +8,7 @@ initializeApp(firebaseConfig)
 const FirebaseApp = () => {
   const [user,setUser] = useState({})
   const [error,setError] = useState("")
+  const [loading,setLoading] = useState(true)
     const auth = getAuth()
     const googleProvider = new GoogleAuthProvider()
     const loginWithGoogle = () =>{
@@ -15,6 +16,9 @@ const FirebaseApp = () => {
     }
     const regesterWithEmail = (email,password) =>{
      return createUserWithEmailAndPassword(auth,email,password)
+    }
+    const updateUser = profile =>{
+      return updateProfile(auth.currentUser,profile)
     }
     const loginWithEmail = (email,password) =>{
      return signInWithEmailAndPassword(email,password)
@@ -32,6 +36,7 @@ const FirebaseApp = () => {
         const currentUser = onAuthStateChanged(auth, (user) => {
             if (user) {
               setUser(user)
+              setLoading(false)
             } else {
              setUser({})
             }
@@ -45,7 +50,11 @@ const FirebaseApp = () => {
         user,
         setUser,
         setError,
-        error
+        error,
+        logout,
+        loading,
+        setLoading,
+        updateUser
     }
 };
 
