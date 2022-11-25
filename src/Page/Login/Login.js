@@ -1,21 +1,43 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
+import { useLocation, useNavigate } from 'react-router-dom';
 import img from '../../img/regeter.webp'
 import UseAuth from '../../Shared/UseAuth/UseAuth';
 
 const Login = () => {
-    const {loginWithGoogle,setUser,setError,error}= UseAuth()
+    const {loginWithGoogle,setUser,setError,error,setLoading,loginWithEmail}= UseAuth()
     const { register, handleSubmit,reset } = useForm();
+    const location = useLocation()
+    const navigate = useNavigate()
+    const from = location.state?.from?.pathname || '/';
     const onSubmit = data => {
-        console.log(data)
+        setLoading(true)
+        const email = data.email;
+        const password = data.password
+        console.log(email,password)
+        setError("")
+        loginWithEmail(email,password)
+        .then(userCredential =>{
+            const user = userCredential.user;
+            setUser(user)
+            setLoading(false)
+            navigate(from,{replace:true})
+        })
+        .catch((error) => {
+            const errorMessage = error.message;
+            setError(errorMessage)
+          });
         reset()
     };
     const loginGoogle=() => {
+        setLoading(true)
         setError("")
         loginWithGoogle()
         .then(result=>{
             const user = result.user;
             setUser(user)
+            setLoading(false)
+            navigate(from,{replace:true})
         })
         .catch(error =>{
             const errorMessage = error.message;

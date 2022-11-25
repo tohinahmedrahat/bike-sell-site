@@ -1,15 +1,26 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import UseAuth from '../../Shared/UseAuth/UseAuth';
 import img from '../../img/regeter.webp'
+import { useNavigate } from 'react-router-dom';
 
 const Regester = () => {
-    const { loginWithGoogle, setUser, setError, error } = UseAuth()
+    const { loginWithGoogle, setUser, setError, error,regesterWithEmail,updateUser,setLoading } = UseAuth()
     const { register, handleSubmit, reset } = useForm();
+    const [imgUrl,setImgUrl] = useState("")
+    const navigate = useNavigate()
     const imgHostKey = process.env.REACT_APP_imgbb_key
+    
+    // create user with email and password function 
     const onSubmit = data => {
+        setLoading(true)
         setError("")
         const file = data.img[0]
+        const email = data.email
+        const password = data.password
+        const name = data.name;
+        const role = data.role;
+        // host img to imgbb
         const formData = new FormData();
         formData.append("image", file)
         const url = `https://api.imgbb.com/1/upload?key=${imgHostKey}`
@@ -20,25 +31,79 @@ const Regester = () => {
             .then(res => res.json())
             .then(imgData => {
                 if (imgData.success) {
-                    console.log(imgData.data.url)
+                    setImgUrl(imgData.data.url)
                 }
             })
-            console.log(data)
+        // add account firebase
+        regesterWithEmail(email,password)
+        .then(userCredential => {
+            const user = userCredential.user;
+            setUser(user)
+            updateUserProfile(name,imgUrl,role,email)
+        })
+        .catch(error => {
+            const errorMessage = error.message;
+            setError(errorMessage)
+        })
+        
         reset()
 
     };
+    // update user information on firebase function 
+    const updateUserProfile = (name,img,role,email) => {
+        const profile = {
+            displayName:name,
+            photoURL:img
+        }
+        updateUser(profile)
+        .then(() => {
+            saveUser(name,email,img,role)
+            setLoading(false)
+            navigate("/")
+        })
+        .catch(error => {
+            console.log(error.message)
+        })
+    }
+    // login function on google
     const loginGoogle = () => {
         setError("")
         loginWithGoogle()
             .then(result => {
                 const user = result.user;
                 setUser(user)
+                 saveUser(user.displayName,user.email,user.photoURL,"buyer")
+                navigate("/")
             })
             .catch(error => {
                 const errorMessage = error.message;
                 setError(errorMessage)
             })
     }
+    // save user to database
+    const saveUser = (name,email,img,role) =>{
+        const user = {
+            name:name,
+            emali:email,
+            img:img,
+            role:role,
+            verify:false
+        }
+        fetch("http://localhost:5000/user",{
+            method:"POST",
+            headers:{
+                'content-type':'application/json'
+            },
+            body:JSON.stringify(user)
+        })
+        .then(res => res.json())
+        .then(data => {
+            if(data.acknowledged){
+                navigate("/")
+            }
+        })
+    }
+   
     return (
         <div className='md:flex justify-center items-center gap-4'>
             <div className='md:w-2/4'>
@@ -51,7 +116,7 @@ const Regester = () => {
                     <label className="label">
                         <span className="label-text">Upload Your Photo</span>
                     </label>
-                    <input type="file" required {...register("img")} />
+                    <input className="bg-slate-600 py-2 px-1 rounded border-2 border-orange-400" type="file" {...register("img")} />
                     <select className="input input-bordered w-full my-3" required {...register("role")}>
                         <option value="seller">Seller</option>
                         <option value="buyer">Buyer</option>

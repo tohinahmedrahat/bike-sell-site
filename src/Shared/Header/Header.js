@@ -1,12 +1,17 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import UseAuth from '../UseAuth/UseAuth';
 
 const Header = () => {
+    const {user,logout} = UseAuth()
     const menuItem = <React.Fragment>
             <li><Link to="/">Home</Link></li>
             <li><Link to="/blog">Blog</Link></li>
             <li><Link to="/login">Login</Link></li>
             <li><Link to="/regester">Regester</Link></li>
+            {
+                user?.email && <li><Link to="/dashboard">Dashboard</Link></li>
+            }
     </React.Fragment>
     return (
         <div>
@@ -28,7 +33,9 @@ const Header = () => {
                     </ul>
                 </div>
                 <div className="navbar-end">
-                    <Link className="btn">Get started</Link>
+                    {
+                        user?.email && <button onClick={logout} className="btn">LogOut</button>
+                    }
                 </div>
             </div>
         </div>

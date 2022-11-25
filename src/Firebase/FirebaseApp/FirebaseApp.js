@@ -21,7 +21,7 @@ const FirebaseApp = () => {
       return updateProfile(auth.currentUser,profile)
     }
     const loginWithEmail = (email,password) =>{
-     return signInWithEmailAndPassword(email,password)
+     return signInWithEmailAndPassword(auth,email,password)
     }
     const logout = () =>{
       signOut(auth)
