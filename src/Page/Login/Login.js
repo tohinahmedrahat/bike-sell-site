@@ -11,7 +11,6 @@ const Login = () => {
     const navigate = useNavigate()
     const from = location.state?.from?.pathname || '/';
     const onSubmit = data => {
-        setLoading(true)
         const email = data.email;
         const password = data.password
         console.log(email,password)
@@ -20,8 +19,9 @@ const Login = () => {
         .then(userCredential =>{
             const user = userCredential.user;
             setUser(user)
-            setLoading(false)
             navigate(from,{replace:true})
+            setLoading(false)
+            
         })
         .catch((error) => {
             const errorMessage = error.message;
@@ -30,14 +30,14 @@ const Login = () => {
         reset()
     };
     const loginGoogle=() => {
-        setLoading(true)
         setError("")
         loginWithGoogle()
         .then(result=>{
             const user = result.user;
             setUser(user)
-            setLoading(false)
             navigate(from,{replace:true})
+            setLoading(false)
+            
         })
         .catch(error =>{
             const errorMessage = error.message;
@@ -46,7 +46,7 @@ const Login = () => {
     }
     return (
         <div className='md:flex justify-center items-center gap-4'>
-            <div className='md:w-2/4'>
+            <div className='md:w-2/4 w-3/4 mx-auto'>
                 <h6 className='text-2xl text-center font-semibold capitalize'>Please login your account</h6>
                 <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col">
                     <label className="label">

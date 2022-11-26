@@ -39,6 +39,7 @@ const FirebaseApp = () => {
               setLoading(false)
             } else {
              setUser({})
+             setLoading(false)
             }
           });
           return () => currentUser;

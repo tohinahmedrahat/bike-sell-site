@@ -106,7 +106,7 @@ const Regester = () => {
    
     return (
         <div className='md:flex justify-center items-center gap-4'>
-            <div className='md:w-2/4'>
+            <div className='md:w-2/4 w-3/4 mx-auto'>
                 <h6 className='text-2xl text-center font-semibold capitalize'>Please Rgester your account</h6>
                 <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col">
                     <label className="label">
