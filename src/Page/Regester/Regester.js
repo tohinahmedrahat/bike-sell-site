@@ -7,7 +7,6 @@ import { useNavigate } from 'react-router-dom';
 const Regester = () => {
     const { loginWithGoogle, setUser, setError, error,regesterWithEmail,updateUser,setLoading } = UseAuth()
     const { register, handleSubmit, reset } = useForm();
-    const [imgUrl,setImgUrl] = useState("")
     const navigate = useNavigate()
     const imgHostKey = process.env.REACT_APP_imgbb_key
     
@@ -24,22 +23,24 @@ const Regester = () => {
         const formData = new FormData();
         formData.append("image", file)
         const url = `https://api.imgbb.com/1/upload?key=${imgHostKey}`
-        fetch(url, {
-            method: "POST",
-            body: formData
-        })
-            .then(res => res.json())
-            .then(imgData => {
-                if (imgData.success) {
-                    setImgUrl(imgData.data.url)
-                }
-            })
+        
         // add account firebase
         regesterWithEmail(email,password)
         .then(userCredential => {
             const user = userCredential.user;
             setUser(user)
-            updateUserProfile(name,imgUrl,role,email)
+            fetch(url, {
+                method: "POST",
+                body: formData
+            })
+                .then(res => res.json())
+                .then(imgData => {
+                    if (imgData.success) {
+                        const img = imgData.data.url
+                        updateUserProfile(name,img,role,email)
+                    }
+                })
+            
         })
         .catch(error => {
             const errorMessage = error.message;

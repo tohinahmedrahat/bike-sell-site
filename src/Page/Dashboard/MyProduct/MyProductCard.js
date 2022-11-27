@@ -1,8 +1,36 @@
 import React from 'react';
+import { toast } from 'react-toastify';
 
 const MyProductCard = ({products}) => {
     const { buyYear, category, condition, details, img, meetplace, name, number, postTime,
-        price, userEmail, orginalPrice, sellerName } = products
+        price, userEmail, orginalPrice, sellerName, _id } = products
+        const deleteProduct = id => {
+            console.log(id)
+            fetch(`http://localhost:5000/product/${id}`,{
+                method:"DELETE"
+            })
+            .then(res => res.json())
+            .then(data => {
+                if(data.acknowledged){
+                    toast("your product delet succesfully")
+                }
+            })
+        }
+        const advertisement = products =>{
+                fetch("http://localhost:5000/advertisement",{
+                    method:"POST",
+                    headers:{
+                        'content-type':'application/json'
+                    },
+                    body:JSON.stringify(products)
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if(data.acknowledged){
+                        toast("your product add to advertisement")
+                    }
+                })
+        }
     return (
         <div>
             <div className="card flex w-96 bg-base-100 shadow-xl">
@@ -25,8 +53,8 @@ const MyProductCard = ({products}) => {
                         <div className="badge badge-outline">Seller Name: {sellerName}</div>
                     </div>
                     <div className='flex justify-between pt-2'>
-                        <button className="btn btn-outline btn-success">Add adverise</button>
-                        <button className="btn btn-outline btn-success">Delet</button>
+                        <button onClick={()=> advertisement(products)} className="btn btn-outline btn-success">Add adverise</button>
+                        <button onClick={()=> deleteProduct(_id)} className="btn btn-outline btn-success">Delet</button>
                     </div>
                 </div>
             </div>

@@ -1,6 +1,6 @@
 import React from 'react';
 
-const ProductCard = ({ product }) => {
+const ProductCard = ({ product,setBookingProduct }) => {
     const { buyYear, category, condition, details, img, meetplace, name, number, postTime,
         price, userEmail, orginalPrice, sellerName } = product
     return (
@@ -26,7 +26,8 @@ const ProductCard = ({ product }) => {
                     </div>
                     <div className='flex justify-between pt-2'>
                         <button className="btn btn-outline btn-success">Add to wishList</button>
-                        <button className="btn btn-outline btn-success">Book Now</button>
+                        {/* <button htmlFor="bookin-modal" className="btn btn-outline btn-success">Book Now</button> */}
+                        <label onClick={() => setBookingProduct(product)} htmlFor="bookin-modal" className="btn btn-outline btn-success">Book Now</label>
                     </div>
                 </div>
             </div>

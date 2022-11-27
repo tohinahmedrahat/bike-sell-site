@@ -6,7 +6,7 @@ import { useQuery } from '@tanstack/react-query'
 
 const Dashboard = () => {
     const {user} = UseAuth()
-    console.log(user.email)
+    
     const {data} = useQuery({
         queryKey:["user",user.email],
         queryFn: async () => {
@@ -15,6 +15,7 @@ const Dashboard = () => {
             return data
           }
     })
+    console.log(data?.role)
     return (
         <div>
             <div className="drawer drawer-mobile">
@@ -26,9 +27,18 @@ const Dashboard = () => {
                 <div className="drawer-side">
                     <label htmlFor="my-drawer-2" className="drawer-overlay"></label>
                     <ul className="menu p-4 w-80 bg-base-100 text-base-content">
-                        <li><Link to="/dashboard/addcategory">Add Category</Link></li>
-                        <li><Link to="/dashboard/addproduct">Add Product</Link></li>
-                        <li><Link to="/dashboard/myproduct">My Product</Link></li>
+                        {
+                            data?.role === "admin" ? <><li><Link to="/dashboard/addcategory">Add Category</Link></li><li><Link to="/dashboard/alluser">All user</Link></li></>:""
+                        }
+                        
+                        {
+                            data?.role === "seller" ? <> <li><Link to="/dashboard/addproduct">Add Product</Link></li>
+                            <li><Link to="/dashboard/myproduct">My Product</Link></li></>:""
+                        }
+                        {
+                           data?.role === "buyer"? <li><Link to="/dashboard/myorder">My Order</Link></li>:""
+                        }
+                        
                     </ul>
 
                 </div>
