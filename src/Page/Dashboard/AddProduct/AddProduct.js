@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import UseAuth from '../../../Shared/UseAuth/UseAuth';
@@ -6,7 +6,6 @@ import UseAuth from '../../../Shared/UseAuth/UseAuth';
 const AddProduct = () => {
     const {user} = UseAuth()
     const { register, handleSubmit, reset } = useForm();
-    const [imgUrl,setImgUrl] = useState("")
     const imgHostKey = process.env.REACT_APP_imgbb_key
     const addProduct = (data) => {
         const file = data.img[0]
@@ -19,6 +18,8 @@ const AddProduct = () => {
         const condition = data.condition;
         const meetplace = data.meetplace;
         const email = user.email;
+        const sellerName = user.displayName;
+        const orginalPrice = data.orginalPrice;
         const date = new Date().toDateString()
         // host img to imgbb
         const formData = new FormData();
@@ -31,36 +32,42 @@ const AddProduct = () => {
             .then(res => res.json())
             .then(imgData => {
                 if (imgData.success) {
-                    setImgUrl(imgData.data.url)
+                    const imgUrl=imgData.data.url
+                    saveProductToDatabase(name,details,imgUrl,price,number,buyYear,category,condition,meetplace,date,email,sellerName,orginalPrice)
                 }
             })
-            const Categorys = {
-                name:name,
-                details:details,
-                img:imgUrl,
-                price:price,
-                number:number,
-                buyYear:buyYear,
-                category:category,
-                condition:condition,
-                meetplace:meetplace,
-                postTime:date,
-                userEmail:email
-            }
             
-            fetch("http://localhost:5000/addproduct",{
-                method:"POST",
-                headers:{
-                    'content-type':'application/json'
-                },
-                body:JSON.stringify(Categorys)
-            }).then(res => res.json())
-            .then(data => {
-                if(data.acknowledged){
-                    toast.success("your Product add succesfully")
-                }
-            })
             reset()
+    }
+    const saveProductToDatabase= (name,details,imgUrl,price,number,buyYear,category,condition,meetplace,date,email,sellerName,orginalPrice) => {
+        const Categorys = {
+            name:name,
+            details:details,
+            img:imgUrl,
+            price:price,
+            number:number,
+            buyYear:buyYear,
+            category:category,
+            condition:condition,
+            meetplace:meetplace,
+            postTime:date,
+            userEmail:email,
+            sellerName:sellerName,
+            orginalPrice:orginalPrice
+        }
+        
+        fetch("http://localhost:5000/addproduct",{
+            method:"POST",
+            headers:{
+                'content-type':'application/json'
+            },
+            body:JSON.stringify(Categorys)
+        }).then(res => res.json())
+        .then(data => {
+            if(data.acknowledged){
+                toast.success("your Product add succesfully")
+            }
+        })
     }
     return (
         <div>
@@ -78,6 +85,10 @@ const AddProduct = () => {
                     <span className="label-text text-lg capitalize">add contract number</span>
                 </label>
                 <input className="input input-bordered w-full" type="text" {...register("number")} />
+            <label className="label">
+                    <span className="label-text text-lg capitalize">add OrginalPrice</span>
+                </label>
+                <input className="input input-bordered w-full" type="text" {...register("orginalPrice")} />
             <label className="label">
                     <span className="label-text text-lg capitalize">Year of purchase</span>
                 </label>
