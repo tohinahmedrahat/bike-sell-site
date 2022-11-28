@@ -23,6 +23,18 @@ const AllUser = () => {
                 }
             })
     }
+    const updateUser = id => {
+        fetch(`http://localhost:5000/user/${id}`,{
+            method:"PUT"
+        })
+        .then(res => res.json())
+        .then(data => {
+            if(data.acknowledged){
+                toast("your Verifyed succesfully")
+                refetch()
+            }
+        })
+    }
     return (
         <div>
             {
@@ -52,7 +64,7 @@ const AllUser = () => {
                                         <span className="badge badge-ghost badge-sm">{user.role}</span>
                                     </td>
                                 <td>
-                                <button className="btn btn-ghost btn-xs">Verifyed</button>
+                                <button onClick={()=>updateUser(user._id)} className="btn btn-ghost btn-xs">Verifyed</button>
                                 </td>
                                     <th>
                                         <button onClick={()=> deleteUser(user._id)} className="btn btn-ghost btn-xs">Delete</button>

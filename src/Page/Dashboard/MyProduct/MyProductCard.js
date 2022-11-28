@@ -3,9 +3,9 @@ import { toast } from 'react-toastify';
 
 const MyProductCard = ({products}) => {
     const { buyYear, category, condition, details, img, meetplace, name, number, postTime,
-        price, userEmail, orginalPrice, sellerName, _id } = products
+        price, userEmail, orginalPrice, sellerName, _id,verify } = products
         const deleteProduct = id => {
-            console.log(id)
+           
             fetch(`http://localhost:5000/product/${id}`,{
                 method:"DELETE"
             })
@@ -47,6 +47,7 @@ const MyProductCard = ({products}) => {
                         <div className="badge badge-outline">{meetplace}</div>
                         <div className="badge badge-outline">{number}</div>
                         <div className="badge badge-outline">{postTime}</div>
+                        <div className="badge badge-outline">{verify?verify:""}</div>
                         <div className="badge badge-outline">Sell Price: {price}</div>
                         <div className="badge badge-outline">Buy Price: {orginalPrice}</div>
                         <div className="badge badge-outline">Seller Email: {userEmail}</div>

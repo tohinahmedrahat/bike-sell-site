@@ -14,7 +14,7 @@ const MyProduct = () => {
             return data
           }
     })
-    console.log(data)
+
     return (
         <div>
             <div className='md:grid grid-cols-2 gap-2'>

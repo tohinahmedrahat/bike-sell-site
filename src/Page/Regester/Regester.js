@@ -91,7 +91,7 @@ const Regester = () => {
             verify:false
         }
         fetch("http://localhost:5000/user",{
-            method:"POST",
+            method:"put",
             headers:{
                 'content-type':'application/json'
             },

@@ -6,7 +6,6 @@ import { useQuery } from '@tanstack/react-query'
 
 const Dashboard = () => {
     const {user} = UseAuth()
-    
     const {data} = useQuery({
         queryKey:["user",user.email],
         queryFn: async () => {
@@ -15,7 +14,7 @@ const Dashboard = () => {
             return data
           }
     })
-    console.log(data?.role)
+ 
     return (
         <div>
             <div className="drawer drawer-mobile">
