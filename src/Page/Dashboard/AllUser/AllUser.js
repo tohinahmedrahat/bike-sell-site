@@ -10,7 +10,6 @@ const AllUser = () => {
             return data
         }
     })
-    console.log(data)
     return (
         <div>
             {
