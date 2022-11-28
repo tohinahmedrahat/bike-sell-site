@@ -7,10 +7,10 @@ import ProductCard from '../ProductCard/ProductCard';
 const Products = () => {
     const {name} = useParams()
     const [bookingProduct,setBookingProduct] = useState(null)
-    const {isLoading,data,error} = useQuery({
+    const {isLoading,data} = useQuery({
         queryKey:["product",name],
         queryFn: async () => {
-            const res = await fetch(`http://localhost:5000/product?category=${name}`)
+            const res = await fetch(`https://service-server-tohinahmedrahat.vercel.app/product?category=${name}`)
             const data = await res.json()
             return data
           }

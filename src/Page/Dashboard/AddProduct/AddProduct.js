@@ -56,7 +56,7 @@ const AddProduct = () => {
             orginalPrice:orginalPrice
         }
         
-        fetch("http://localhost:5000/addproduct",{
+        fetch("https://service-server-tohinahmedrahat.vercel.app/addproduct",{
             method:"POST",
             headers:{
                 'content-type':'application/json'

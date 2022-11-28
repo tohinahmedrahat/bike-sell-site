@@ -6,10 +6,10 @@ import MyProductCard from './MyProductCard';
 const MyProduct = () => {
     const {user} = UseAuth()
     const email = user.email
-    const {isLoading,data,error} = useQuery({
+    const {isLoading,data} = useQuery({
         queryKey:["product",email],
         queryFn: async () => {
-            const res = await fetch(`http://localhost:5000/products?email=${email}`)
+            const res = await fetch(`https://service-server-tohinahmedrahat.vercel.app/products?email=${email}`)
             const data = await res.json()
             return data
           }

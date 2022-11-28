@@ -6,7 +6,7 @@ const MyProductCard = ({products}) => {
         price, userEmail, orginalPrice, sellerName, _id,verify } = products
         const deleteProduct = id => {
            
-            fetch(`http://localhost:5000/product/${id}`,{
+            fetch(`https://service-server-tohinahmedrahat.vercel.app/product/${id}`,{
                 method:"DELETE"
             })
             .then(res => res.json())
@@ -17,7 +17,7 @@ const MyProductCard = ({products}) => {
             })
         }
         const advertisement = products =>{
-                fetch("http://localhost:5000/advertisement",{
+                fetch("https://service-server-tohinahmedrahat.vercel.app/advertisement",{
                     method:"POST",
                     headers:{
                         'content-type':'application/json'

@@ -9,7 +9,7 @@ const Dashboard = () => {
     const {data} = useQuery({
         queryKey:["user",user.email],
         queryFn: async () => {
-            const res = await fetch(`http://localhost:5000/user?email=${user.email}`)
+            const res = await fetch(`https://service-server-tohinahmedrahat.vercel.app/user?email=${user.email}`)
             const data = await res.json()
             return data
           }

@@ -5,10 +5,10 @@ import UseAuth from '../../../Shared/UseAuth/UseAuth';
 const MyOrder = () => {
     const { user } = UseAuth()
     const email = user.email
-    const { isLoading, data, error } = useQuery({
+    const { isLoading, data } = useQuery({
         queryKey: ["product", email],
         queryFn: async () => {
-            const res = await fetch(`http://localhost:5000/order?email=${email}`)
+            const res = await fetch(`https://service-server-tohinahmedrahat.vercel.app/order?email=${email}`)
             const data = await res.json()
             return data
         }

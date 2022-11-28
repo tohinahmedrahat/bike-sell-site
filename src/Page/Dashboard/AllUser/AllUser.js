@@ -6,13 +6,13 @@ const AllUser = () => {
     const { isLoading, data,refetch } = useQuery({
         queryKey: ["product"],
         queryFn: async () => {
-            const res = await fetch(`http://localhost:5000/alluser`)
+            const res = await fetch(`https://service-server-tohinahmedrahat.vercel.app/alluser`)
             const data = await res.json()
             return data
         }
     })
     const deleteUser = id => {
-        fetch(`http://localhost:5000/user/${id}`,{
+        fetch(`https://service-server-tohinahmedrahat.vercel.app/user/${id}`,{
                 method:"DELETE"
             })
             .then(res => res.json())
@@ -24,7 +24,7 @@ const AllUser = () => {
             })
     }
     const updateUser = id => {
-        fetch(`http://localhost:5000/user/${id}`,{
+        fetch(`https://service-server-tohinahmedrahat.vercel.app/user/${id}`,{
             method:"PUT"
         })
         .then(res => res.json())

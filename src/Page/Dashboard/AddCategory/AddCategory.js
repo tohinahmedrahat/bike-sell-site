@@ -30,7 +30,7 @@ const AddCategory = () => {
                 details:details,
                 img:imgUrl
             }
-            fetch("http://localhost:5000/addCategory",{
+            fetch("https://service-server-tohinahmedrahat.vercel.app/addCategory",{
                 method:"POST",
                 headers:{
                     'content-type':'application/json'

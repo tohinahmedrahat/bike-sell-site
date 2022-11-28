@@ -20,7 +20,7 @@ const BookNow = ({ bookingProduct,setBookingProduct }) => {
             userNumber,
             img
         }
-        fetch("http://localhost:5000/order",{
+        fetch("https://service-server-tohinahmedrahat.vercel.app/order",{
             method:"POST",
             headers:{
                 'content-type':'application/json'
@@ -32,7 +32,7 @@ const BookNow = ({ bookingProduct,setBookingProduct }) => {
                 toast.success("your Order add succesfully")
             }
         })
-        // http://localhost:5000/order
+        // https://service-server-tohinahmedrahat.vercel.app/order
         setBookingProduct(null)
     }
     return (
