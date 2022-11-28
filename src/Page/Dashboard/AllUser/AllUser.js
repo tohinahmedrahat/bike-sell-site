@@ -1,8 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
+import { toast } from 'react-toastify';
 
 const AllUser = () => {
-    const { isLoading, data, error } = useQuery({
+    const { isLoading, data,refetch } = useQuery({
         queryKey: ["product"],
         queryFn: async () => {
             const res = await fetch(`http://localhost:5000/alluser`)
@@ -10,6 +11,18 @@ const AllUser = () => {
             return data
         }
     })
+    const deleteUser = id => {
+        fetch(`http://localhost:5000/user/${id}`,{
+                method:"DELETE"
+            })
+            .then(res => res.json())
+            .then(data => {
+                if(data.acknowledged){
+                    toast("your product delet succesfully")
+                    refetch()
+                }
+            })
+    }
     return (
         <div>
             {
@@ -42,7 +55,7 @@ const AllUser = () => {
                                 <button className="btn btn-ghost btn-xs">Verifyed</button>
                                 </td>
                                     <th>
-                                        <button className="btn btn-ghost btn-xs">Delete</button>
+                                        <button onClick={()=> deleteUser(user._id)} className="btn btn-ghost btn-xs">Delete</button>
                                     </th>
                                 </tr>
                             ))
